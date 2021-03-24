@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool find132pattern(vector<int>& nums) {
+     stack<int> spare;
+     int n = nums.size() , k = INT_MIN;
+     for(int i = n - 1; i >= 0 ; i--){
+         if(nums[i]<k) return true;
+         while(!spare.empty() && nums[i] > spare.top()){
+                 k = max(k,spare.top());
+                 spare.pop();
+         }
+         spare.push(nums[i]);
+     }
+
+     return false;  
+    }
+};
+
+tip: monotonic stack
