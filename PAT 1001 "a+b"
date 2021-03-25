@@ -1,0 +1,35 @@
+Calculate a+b and output the sum in standard format -- that is, the digits must be separated into groups of three by commas (unless there are less than four digits).
+Input Specification:
+
+Each input file contains one test case. Each case contains a pair of integers a and b where −10​6​​≤a,b≤10​6​​. The numbers are separated by a space.
+Output Specification:
+
+For each test case, you should output the sum of a and b in one line. The sum must be written in the standard format.
+
+
+#include<iostream>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+int main(){
+    int a , b , sum;
+    cin >> a >> b ;
+    sum = a+b;
+    string flag="";
+    string str1 = to_string(abs(sum));
+    string str2;
+    if(sum<0) flag='-';
+    int j = 0;
+    for(int i = str1.length()-1 ;i>=0;i--){
+        str2[j++] = str1[i];
+        
+        if((str1.length()-i)%3 == 0 && i != 0)
+            str2[j++] = ',';
+    }
+    
+    cout<<flag;
+    for(int i = j-1 ; i>=0;i--)
+        cout<<str2[i];
+    
+    return 0;
+}
