@@ -1,0 +1,108 @@
+https://pintia.cn/problem-sets/994805342720868352/problems/994805523835109376
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#define maxv 501    //最大city数
+#define INF 1e9  
+
+using namespace std;
+
+void dijkstra(void);
+
+struct Edge{
+    int to;                  //to city
+    int value;               //value of c1 to c2 
+};
+
+int N , M , st ,en;          // N: the num of city.  
+                             // M:the number of roads.
+                             //st:the city that you are currently in. 
+                             //en:the city that you must save.
+int emer[maxv] ,w[maxv]={0},num[maxv]={0},dist[maxv];
+                             /*num：the number of different shortest paths between C1 to c2
+                               w:the maximum amount of rescue teams you can possibly gather
+                               emer:the number of rescue teams in respective city
+                               dist:
+                             */
+bool vis[maxv] = {false};    //whether via 
+vector<Edge> G[maxv];        
+
+int main()
+{
+    cin >>N>>M>>st>>en;
+    fill(dist,dist+maxv,INF);//给数组dist赋值（INF）
+    for(int i=0;i<N;i++) cin>>emer[i];  //给每个city赋值（the number of rescue teams）
+    
+    for(int i=0;i<M;i++){
+        int v;
+        Edge e1,e2;         //define two edge
+        cin>>v>>e1.to>>e1.value;
+        e2.to = v; e2.value = e1.value;
+        G[v].push_back(e1);
+        G[e1.to].push_back(e2);
+        if(v==st){                   //initialize the starting point information
+            dist[e1.to]=e1.value;
+            num[e1.to]=1;
+            w[e1.to]=emer[st]+emer[e1.to];     
+    }     
+}
+    w[st]=emer[st];
+    num[st]=1;
+    vis[st]=true;
+    dijkstra();
+    cout<<num[en]<<' '<<w[en];
+    return 0;
+}
+
+void dijkstra(void)
+{
+    for(int i=0;i<N;i++)
+    {
+       int MIN = INF , u=-1;
+        
+        for(int j=0;j<N;j++){
+            if(vis[j]==false && dist[j]<MIN){   
+                MIN = dist[j];
+                    u=j;
+            }
+        }
+        if(MIN == INF) return;
+        vis[u] = true;
+        //遍历所有节点，判断节点是否已经被访问
+        
+        
+        for(int j=0;j<G[u].size();j++){
+            int v ,value;
+            v=G[u][j].to, value=G[u][j].value;
+            if(dist[u]+value < dist[v]){
+                dist[v] = dist[u]+value;    //路长
+                num[v] = num[u];            //同长路的个数
+                w[v] =w[u]+emer[v];         //救援队数目
+            }
+            
+            else if (dist[u]+value == dist[v]){
+                num[v] += num[u];
+                if(w[v]<w[u]+emer[v])
+                    w[v]=w[u]+emer[v];
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
